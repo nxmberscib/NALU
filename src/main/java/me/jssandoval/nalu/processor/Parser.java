@@ -31,10 +31,10 @@ public class Parser {
     }
 
     public String resolve(String originalEquation, Map<String, String> variablesMemory) {
-        // 1. Limpiar espacios. ¡NO reemplazamos las variables aquí para conservar sus nombres!
+        
         String currentEquation = originalEquation.replaceAll("\\s+", "");
 
-        // 2. Patrones actualizados (Agregué guión bajo por si usas nombres como var_A)
+        
         Pattern blockPattern = Pattern.compile("([\\(\\[\\{])([^\\(\\[\\{\\)\\]\\}]+)([\\)\\]\\}])");
         Pattern prio1Pattern = Pattern.compile("(-?[A-Za-z0-9Ññ_\\.]+)([\\*/%])(-?[A-Za-z0-9Ññ_\\.]+)");
         Pattern prio2Pattern = Pattern.compile("(-?[A-Za-z0-9Ññ_\\.]+)([\\+\\-])(-?[A-Za-z0-9Ññ_\\.]+)");
@@ -71,7 +71,6 @@ public class Parser {
             }
         }
 
-        // Red de seguridad: si la ecuación era solo "(A)" o "-A" sin operaciones, devuelve su valor real
         return resolveOperand(currentEquation, variablesMemory);
     }
 
@@ -81,25 +80,18 @@ public class Parser {
             return null;
         }
 
-        // Aquí capturamos los nombres (ej: "A" y "B") o los resultados previos (ej: "101.1")
         String leftName = matcher.group(1);
         String operator = matcher.group(2);
         String rightName = matcher.group(3);
 
-        // ¡MAGIA!: Buscamos el valor numérico dinámicamente.
-        // Si no existe en memoria (porque ya es un número temporal), se queda igual.
-        // Si el nombre trae un '-' pegado y el resto SÍ es una variable conocida (ej. "-A"),
-        // resolvemos el valor de esa variable y le invertimos el signo.
         String leftValue = resolveOperand(leftName, variablesMemory);
         String rightValue = resolveOperand(rightName, variablesMemory);
 
-        // Armamos el título del paso con los nombres originales para la Interfaz Gráfica
         String subEquation = leftName + " " + operator + " " + rightName;
 
         CalculationResult calculationResult;
         String operationName;
 
-        // Operamos matemáticamente enviando los valores DECIMALES PUROS, protegiéndolos del Regex
         switch (operator) {
             case "+":
                 calculationResult = adder.add(leftValue, rightValue);
@@ -127,11 +119,9 @@ public class Parser {
 
         String resultNumericValue = calculationResult.getResult();
 
-        // Sustituimos el pedazo resuelto en la ecuación por el número
         String processedText = textToProcess.substring(0, matcher.start()) + resultNumericValue + textToProcess.substring(matcher.end());
         String nextFullEquation = fullEquation.replace(textToProcess, processedText);
 
-        // El logger ahora registrará "A + B" en lugar de sus valores crudos
         logger.registerStep(
                 subEquation,
                 operationName + " (Base " + alphabet.getBase() + ")",
@@ -143,15 +133,6 @@ public class Parser {
         return processedText;
     }
 
-    /**
-     * Resuelve un operando capturado por el regex a su valor numérico:
-     * - Si es el nombre de una variable conocida (ej. "A"), retorna su valor.
-     * - Si es "-" + nombre de una variable conocida (ej. "-A"), retorna el valor de esa
-     *   variable con el signo invertido (esto es lo que faltaba: sin esto, "-A" se quedaba
-     *   como texto literal y terminaba pasándose "A" al motor aritmético, que no reconoce
-     *   letras como dígitos).
-     * - Si no es ninguna variable (ya es un número resuelto, con o sin signo), se devuelve tal cual.
-     */
     private String resolveOperand(String name, Map<String, String> variablesMemory) {
         if (name.startsWith("-")) {
             String possibleVarName = name.substring(1);
