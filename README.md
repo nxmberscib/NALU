@@ -42,3 +42,12 @@ public static String convertToBase10(String numberStr, Alphabet alphabet) {
         
         return totalDecimal.stripTrailingZeros().toPlainString();
     }
+
+private static final String ALPHABET_256 = 
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
+        "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψω" +
+        "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя" +
+        "亜亐亖亡亢交亥亦产亨亩享京亭亮亝亟亰亲亳亵亯亰亱乩亳亴亵亶亷亸亹" +
+        "人亻亼亾亿什仁仂仃仄仅仆仇今介仉仌仄付仙仐仝仞仟仠仡仚仛" +
+        "仜とにかく代令以仢代令以仦仧仡仩仩仫仪仭仰仱仲仳仴仴件" +
+        "价仸仹仺仼ﾡﾢﾣﾤﾥﾦﾧﾨﾩﾪﾫﾬﾭﾮﾯﾰﾱﾲﾳﾴﾵﾶﾷﾸﾹﾺﾻﾼ";
