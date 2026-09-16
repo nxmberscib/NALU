@@ -62,14 +62,14 @@ public class BaseCalculator {
         // Fila 1: Base Origen N
         JPanel basePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         basePanel.add(new JLabel("Base Origen N (2-64): "));
-        baseSpinner = new JSpinner(new SpinnerNumberModel(32, 2, 64, 1));
+        baseSpinner = new JSpinner(new SpinnerNumberModel(32, 2, 256, 1));
         basePanel.add(baseSpinner);
         inputConfigPanel.add(basePanel);
 
         // Fila 2: Base Destino B
         JPanel targetBasePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         targetBasePanel.add(new JLabel("Base Destino B (2-64): "));
-        targetBaseSpinner = new JSpinner(new SpinnerNumberModel(10, 2, 64, 1));
+        targetBaseSpinner = new JSpinner(new SpinnerNumberModel(10, 2, 256, 1));
         targetBasePanel.add(targetBaseSpinner);
         inputConfigPanel.add(targetBasePanel);
 
