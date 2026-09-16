@@ -1,0 +1,16 @@
+@startuml
+class me.jssandoval.nalu.base.Alphabet {
+- {static} String MASTER_ALPHABET
+- int base
+- String currentAlphabet
++ int getBase()
++ char getZero()
++ char getSymbol(int)
++ int getIndex(char)
++ char nextSymbol(char)
++ char prevSymbol(char)
++ String clearZeros(String)
+}
+
+
+@enduml
