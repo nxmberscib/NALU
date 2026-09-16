@@ -15,7 +15,6 @@ public class VariablePreprocessor {
         int targetBase = targetAlphabet.getBase();
         int maxSymbolIndex = -1;
 
-        // 1. Detectar el símbolo más alto presente en la variable
         for (char c : cleanInput.toCharArray()) {
             if (c == '.') continue;
             int index = STANDARD_SYMBOLS.indexOf(c);
@@ -24,23 +23,19 @@ public class VariablePreprocessor {
 
         int detectedBase = Math.max(maxSymbolIndex + 1, 2);
 
-        // 2. Si encaja en la base N actual, no requiere conversión
         if (detectedBase <= targetBase) {
             return input;
         }
 
-        // 3. Convertir de detectedBase a la base N activa
         return convertBase(cleanInput, isNegative, detectedBase, targetAlphabet);
     }
 
     private static String convertBase(String cleanInput, boolean isNegative, int sourceBase, Alphabet targetAlphabet) {
         String[] parts = cleanInput.split("\\.");
 
-        // Conversión de parte entera
         long decimalInt = Long.parseLong(parts[0], sourceBase);
         String convertedInt = toAlphabetBase(decimalInt, targetAlphabet);
 
-        // Conversión de parte fraccionaria (si existe)
         String convertedFrac = "";
         if (parts.length > 1) {
             double decimalFrac = 0;
